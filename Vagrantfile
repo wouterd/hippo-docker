@@ -11,10 +11,15 @@ $bootstrap_script = <<SCRIPT
   apt-get update
   echo oracle-java7-installer shared/accepted-oracle-license-v1-1 select true | /usr/bin/debconf-set-selections
   echo oracle-jdk7-installer shared/accepted-oracle-license-v1-1 select true | /usr/bin/debconf-set-selections
-
   apt-get -y install oracle-jdk7-installer
 
+  # Install maven
+  apt-get -y install maven
+
   # Install Jenkins 
+  wget -q -O - http://pkg.jenkins-ci.org/debian/jenkins-ci.org.key | apt-key add -
+  sh -c 'echo deb http://pkg.jenkins-ci.org/debian binary/ > /etc/apt/sources.list.d/jenkins.list'
+  apt-get update
   apt-get install -y jenkins
 
   # Install Docker
@@ -41,6 +46,7 @@ $bootstrap_script = <<SCRIPT
   apt-get install -q -y lxc-docker
 
   usermod -a -G docker "$user"
+  usermod -a -G docker "jenkins"
 SCRIPT
 
 Vagrant.configure(VAGRANTFILE_API_VERSION) do |config|
@@ -61,8 +67,9 @@ Vagrant.configure(VAGRANTFILE_API_VERSION) do |config|
   # within the machine from a port on the host machine. In the example below,
   # accessing "localhost:8080" will access port 80 on the guest machine.
   config.vm.network :forwarded_port, guest: 8080, host: 8080, auto_correct:true
+  config.vm.network :forwarded_port, guest: 8081, host: 8081, auto_correct:true
 
   config.vm.provider "virtualbox" do |v|
-    v.customize ["modifyvm", :id, "--memory", "2048"]
+    v.customize ["modifyvm", :id, "--memory", "2048", "--cpus", "4"]
   end
 end
