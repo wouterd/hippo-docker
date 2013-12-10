@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<sv:node xmlns:sv="http://www.jcp.org/jcr/sv/1.0" sv:name="readonly">
+  <sv:property sv:name="jcr:primaryType" sv:type="Name">
+    <sv:value>hipposys:authrole</sv:value>
+  </sv:property>
+  <sv:property sv:name="hipposys:users" sv:type="String" sv:multiple="true">
+    <sv:value>configuser</sv:value>
+  </sv:property>
+  <sv:property sv:name="hipposys:role" sv:type="String">
+    <sv:value>readonly</sv:value>
+  </sv:property>
+</sv:node>

@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<sv:node xmlns:sv="http://www.jcp.org/jcr/sv/1.0" xmlns:h="http://www.onehippo.org/jcr/xmlimport" 
+         sv:name="autoexport"  h:merge="combine">
+  <sv:node sv:name="hippo:moduleconfig" h:merge="combine">
+    <sv:property sv:name="autoexport:enabled" sv:type="Boolean" h:merge="override">
+      <sv:value>false</sv:value>
+    </sv:property>
+    <sv:property sv:name="autoexport:modules" sv:type="String" h:merge="override">
+      <sv:value>bootstrap/content:/content</sv:value>
+      <sv:value>bootstrap/configuration:/</sv:value>
+    </sv:property>
+  </sv:node>
+</sv:node>

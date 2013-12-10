@@ -1,0 +1,118 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
+  <modelVersion>4.0.0</modelVersion>
+
+  <parent>
+    <groupId>org.example</groupId>
+    <artifactId>myhippoproject</artifactId>
+    <version>1.01.00-SNAPSHOT</version>
+  </parent>
+
+  <name>My Hippo Project CMS</name>
+  <description>My Hippo Project CMS</description>
+  <artifactId>myhippoproject-cms</artifactId>
+  <packaging>war</packaging>
+
+  <dependencies>
+    <dependency>
+      <groupId>org.onehippo.cms7.hst.dependencies</groupId>
+      <artifactId>hst-repository-dependencies</artifactId>
+      <type>pom</type>
+    </dependency>
+ 
+    <dependency>
+      <groupId>org.onehippo.cms7.hst.dependencies</groupId>
+      <artifactId>hst-cms-dependencies</artifactId>
+      <type>pom</type>
+    </dependency>
+
+    <dependency>
+      <groupId>org.onehippo.cms7</groupId>
+      <artifactId>hippo-package-cms-dependencies</artifactId>
+      <type>pom</type>
+    </dependency>
+
+    <dependency>
+      <groupId>org.onehippo.cms7</groupId>
+      <artifactId>hippo-addon-channel-manager-frontend</artifactId>
+    </dependency>
+
+    <dependency>
+      <groupId>org.onehippo.cms7</groupId>
+      <artifactId>hippo-addon-channel-manager-repository</artifactId>
+    </dependency>
+
+    <dependency>
+      <groupId>org.example</groupId>
+      <artifactId>myhippoproject-bootstrap-configuration</artifactId>
+      <version>${project.version}</version>
+    </dependency>
+
+    <dependency>
+      <groupId>org.example</groupId>
+      <artifactId>myhippoproject-bootstrap-content</artifactId>
+      <version>${project.version}</version>
+    </dependency>
+
+    <!--  Gallery picker dependency -->
+    <dependency>
+      <groupId>org.onehippo.addon.frontend.gallerypicker</groupId>
+      <artifactId>gallerypicker</artifactId>
+      <exclusions>
+        <exclusion>
+          <groupId>org.apache.wicket</groupId>
+          <artifactId>wicket</artifactId>
+        </exclusion>
+      </exclusions>
+    </dependency>
+   
+  </dependencies>
+
+  <build>
+    <finalName>cms</finalName>
+    <plugins>
+      <plugin>
+        <groupId>org.apache.maven.plugins</groupId>
+        <artifactId>maven-war-plugin</artifactId>
+        <configuration>
+          <archive>
+            <manifestEntries>
+              <Hippo-Release-Version>${hippo.release.version}</Hippo-Release-Version>
+              <Project-Version>${project.version}</Project-Version>
+              <Project-Build>${buildNumber}</Project-Build>
+            </manifestEntries>
+          </archive>
+        </configuration>
+      </plugin>
+      <plugin>
+        <groupId>org.codehaus.cargo</groupId>
+        <artifactId>cargo-maven2-plugin</artifactId>
+        <configuration>
+          <configuration>
+            <type>runtime</type>
+          </configuration>
+          <container>
+            <type>remote</type>
+          </container>
+        </configuration>
+      </plugin>
+      <plugin>
+        <groupId>com.googlecode.mavenfilesync</groupId>
+        <artifactId>maven-filesync-plugin</artifactId>
+        <configuration>
+          <mappings>
+            <mapping>
+              <sourceFolder>src/main/resources</sourceFolder>
+              <destinationFolder>@../target/tomcat${cargo.tomcat.major.version}x/webapps/cms/WEB-INF/classes</destinationFolder>
+            </mapping>
+            <mapping>
+              <sourceFolder>src/main/webapp</sourceFolder>
+              <destinationFolder>@../target/tomcat${cargo.tomcat.major.version}x/webapps/cms</destinationFolder>
+            </mapping>
+          </mappings>
+        </configuration>
+      </plugin>
+    </plugins>
+  </build>
+
+</project>

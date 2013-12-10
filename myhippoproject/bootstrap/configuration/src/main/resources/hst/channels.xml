@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<sv:node sv:name="hst:channels" xmlns:sv="http://www.jcp.org/jcr/sv/1.0">
+  <sv:property sv:name="jcr:primaryType" sv:type="Name">
+    <sv:value>hst:channels</sv:value>
+  </sv:property>
+  <sv:node sv:name="myhippoproject">
+    <sv:property sv:name="jcr:primaryType" sv:type="Name">
+      <sv:value>hst:channel</sv:value>
+    </sv:property>
+    <sv:property sv:name="hst:channelinfoclass" sv:type="String">
+      <sv:value>org.example.channels.WebsiteInfo</sv:value>
+    </sv:property>
+    <sv:property sv:name="hst:name" sv:type="String">
+      <sv:value>My Hippo Project</sv:value>
+    </sv:property>
+      <sv:property sv:name="hst:type" sv:type="String">
+        <sv:value>website</sv:value>
+      </sv:property>
+    <sv:node sv:name="hst:channelinfo">
+      <sv:property sv:name="jcr:primaryType" sv:type="Name">
+        <sv:value>hst:channelinfo</sv:value>
+      </sv:property>
+      <sv:property sv:name="headerName" sv:type="String">
+        <sv:value>HST Website</sv:value>
+      </sv:property>
+    </sv:node>
+  </sv:node>
+</sv:node>

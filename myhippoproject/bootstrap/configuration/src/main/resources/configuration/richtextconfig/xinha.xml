@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<sv:node sv:name="root" h:merge="combine" xmlns:sv="http://www.jcp.org/jcr/sv/1.0" xmlns:h="http://www.onehippo.org/jcr/xmlimport">
+  <sv:property sv:multiple="true" sv:name="Xinha.config.toolbar" sv:type="String" h:merge="append">
+    <sv:value>subscript</sv:value>
+    <sv:value>superscript</sv:value>
+    <sv:value>insertcharacter</sv:value>
+    <sv:value>pastetext</sv:value>
+    <sv:value>htmlmode</sv:value>
+  </sv:property>
+  <sv:property sv:multiple="true" sv:name="Xinha.plugins" sv:type="String" h:merge="append">
+    <sv:value>CharacterMap</sv:value>
+    <sv:value>PasteText</sv:value>
+  </sv:property>
+  <sv:property sv:multiple="true" sv:name="Xinha.format" sv:type="String">
+    <sv:value>p</sv:value>
+    <sv:value>h2</sv:value>
+    <sv:value>h3</sv:value>
+    <sv:value>h4</sv:value>
+  </sv:property>
+</sv:node>

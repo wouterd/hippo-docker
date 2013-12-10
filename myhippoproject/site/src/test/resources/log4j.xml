@@ -1,0 +1,119 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE log4j:configuration SYSTEM "log4j.dtd">
+<log4j:configuration xmlns:log4j="http://jakarta.apache.org/log4j/">
+
+  <!-- ====================================================================== -->
+  <!-- A P P E N D E R S                                                      -->
+  <!-- ====================================================================== -->
+
+  <!-- console -->
+  <appender name="console" class="org.apache.log4j.ConsoleAppender">
+    <param name="Target" value="System.out"/>
+    <layout class="org.apache.log4j.PatternLayout">
+      <param name="ConversionPattern" value="%d{dd.MM.yyyy HH:mm:ss} %-5p [%C.%M():%L] %m%n"/>
+    </layout>
+  </appender>
+
+  <!-- ====================================================================== -->
+  <!-- L O G G E R S                                                          -->
+  <!-- ====================================================================== -->
+
+  <!-- CMS logging -->
+  <logger name="org.apache.jackrabbit.core">
+    <level value="warn"/>
+  </logger>
+  <logger name="org.apache.jackrabbit.extractor">
+    <level value="warn"/>
+  </logger>
+  <logger name="org.apache.jackrabbit">
+    <level value="warn"/>
+  </logger>
+  <logger name="org.hippoecm.repository">
+    <level value="warn"/>
+  </logger>
+  <logger name="org.hippoecm.frontend">
+    <level value="warn"/>
+  </logger>
+  <logger name="org.apache.wicket">
+    <level value="warn"/>
+  </logger>
+
+
+  <!-- Site logging -->
+  <logger additivity="false" name="org.hippoecm.hst">
+    <level value="warn"/>
+    <appender-ref ref="console"/>
+  </logger>
+
+  <logger additivity="false" name="freemarker">
+    <level value="warn"/>
+    <appender-ref ref="console"/>
+  </logger>
+
+  <logger additivity="false" name="org.apache.cxf">
+    <level value="warn"/>
+    <appender-ref ref="console"/>
+  </logger>
+
+  <logger additivity="false" name="javax.ws.rs.core">
+    <level value="warn"/>
+    <appender-ref ref="console"/>
+  </logger>
+
+  <logger additivity="false" name="org.apache.commons.pool">
+    <level value="warn"/>
+    <appender-ref ref="console"/>
+  </logger>
+
+  <logger additivity="false" name="org.apache.commons.beanutils">
+    <level value="warn"/>
+    <appender-ref ref="console"/>
+  </logger>
+
+  <!-- too many caching warnings -->
+  <logger name="org.apache.jackrabbit.core.state">
+    <level value="error"/>
+  </logger>
+  <logger name="org.apache.jackrabbit.core.ItemManager">
+    <level value="error"/>
+  </logger>
+  <logger name="org.apache.jackrabbit.core.persistence.bundle.util.LRUNodeIdCache">
+    <level value="error"/>
+  </logger>
+
+  <!-- ignore wicket localizer warnings -->
+  <logger name="org.apache.wicket.Localizer">
+    <level value="error"/>
+  </logger>
+
+  <!-- ignore DataNucleus errors -->
+  <logger name="DataNucleus.Plugin">
+    <level value="fatal"/>
+  </logger>
+  <logger name="DataNucleus.ClassLoading">
+    <level value="fatal"/>
+  </logger>
+  <logger name="DataNucleus.Enhancer">
+    <level value="fatal"/>
+  </logger>
+
+  <!-- more info wanted -->
+  <logger name="org.apache.jackrabbit.core.persistence.bundle">
+    <level value="warn"/>
+  </logger>
+  <logger name="org.hippoecm.repository.jackrabbit.persistence">
+    <level value="info"/>
+  </logger>
+  <logger name="org.hippoecm.repository.updater">
+    <level value="info"/>
+  </logger>
+  <logger name="org.hippoecm.repository.export">
+    <level value="info"/>
+  </logger>
+
+  <root>
+    <level value="warn"/>
+    <appender-ref ref="console"/>
+  </root>
+
+</log4j:configuration>

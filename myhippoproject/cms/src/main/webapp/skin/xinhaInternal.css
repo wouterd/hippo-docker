@@ -1,0 +1,54 @@
+/* Defaults */
+
+* { margin: 0; padding: 0; }
+
+div.clearer { clear: both; }
+
+/* ======================================== */
+
+body, table tr td, table tr th {
+  font-family: arial,sans-serif,helvetica;
+  font-size: 12px;
+  line-height: 14px;
+  vertical-align: top;
+  background: white;
+  padding-top: 5px;
+}
+
+ol, ul{ list-style-position: inside }
+
+h1 {
+  font-size: 1.4em;
+  line-height: 2.7em;
+  font-weight: bold;
+  font-family: arial, sans-serif;
+}
+
+h2 {
+  font-size: 1.2em;
+  line-height: 1.2em;
+  margin: 0.65em 0;
+  font-weight: bold;
+  font-family: arial, sans-serif;
+}
+
+h3 {
+  font-size: 1.3em;
+  line-height: 1.2em;
+  margin: 0.65em 0;
+  font-weight: bold;
+  font-family: arial, sans-serif;
+}
+
+h4, h5, h6 {
+  font-size: 1.2em;
+  line-height: 1.2em;
+  margin: 0.65em 0;
+  font-family: arial, sans-serif;
+}
+
+p {
+  font-size: 1.2em;
+  line-height: 1.2em;
+  font-family: arial, sans-serif;
+}
