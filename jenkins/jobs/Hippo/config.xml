@@ -1,0 +1,97 @@
+<?xml version='1.0' encoding='UTF-8'?>
+<maven2-moduleset plugin="maven-plugin@2.0">
+  <actions/>
+  <description></description>
+  <keepDependencies>false</keepDependencies>
+  <properties/>
+  <scm class="hudson.plugins.git.GitSCM" plugin="git@2.0">
+    <configVersion>2</configVersion>
+    <userRemoteConfigs>
+      <hudson.plugins.git.UserRemoteConfig>
+        <url>https://github.com/wouterd/hippo-docker.git</url>
+      </hudson.plugins.git.UserRemoteConfig>
+    </userRemoteConfigs>
+    <branches>
+      <hudson.plugins.git.BranchSpec>
+        <name>*/master</name>
+      </hudson.plugins.git.BranchSpec>
+    </branches>
+    <doGenerateSubmoduleConfigurations>false</doGenerateSubmoduleConfigurations>
+    <submoduleCfg class="list"/>
+    <extensions/>
+  </scm>
+  <canRoam>true</canRoam>
+  <disabled>false</disabled>
+  <blockBuildWhenDownstreamBuilding>false</blockBuildWhenDownstreamBuilding>
+  <blockBuildWhenUpstreamBuilding>false</blockBuildWhenUpstreamBuilding>
+  <triggers/>
+  <concurrentBuild>false</concurrentBuild>
+  <rootModule>
+    <groupId>org.example</groupId>
+    <artifactId>myhippoproject</artifactId>
+  </rootModule>
+  <rootPOM>myhippoproject/pom.xml</rootPOM>
+  <goals>clean package</goals>
+  <defaultGoals>package</defaultGoals>
+  <aggregatorStyleBuild>true</aggregatorStyleBuild>
+  <incrementalBuild>false</incrementalBuild>
+  <perModuleEmail>true</perModuleEmail>
+  <ignoreUpstremChanges>true</ignoreUpstremChanges>
+  <archivingDisabled>false</archivingDisabled>
+  <resolveDependencies>false</resolveDependencies>
+  <processPlugins>false</processPlugins>
+  <mavenValidationLevel>-1</mavenValidationLevel>
+  <runHeadless>false</runHeadless>
+  <disableTriggerDownstreamProjects>false</disableTriggerDownstreamProjects>
+  <settings class="jenkins.mvn.DefaultSettingsProvider"/>
+  <globalSettings class="jenkins.mvn.DefaultGlobalSettingsProvider"/>
+  <reporters/>
+  <publishers/>
+  <buildWrappers/>
+  <prebuilders/>
+  <postbuilders>
+    <hudson.tasks.Maven>
+      <targets>-P dist</targets>
+      <mavenName>(Default)</mavenName>
+      <pom>myhippoproject/pom.xml</pom>
+      <usePrivateRepository>false</usePrivateRepository>
+      <settings class="jenkins.mvn.DefaultSettingsProvider"/>
+      <globalSettings class="jenkins.mvn.DefaultGlobalSettingsProvider"/>
+    </hudson.tasks.Maven>
+    <hudson.tasks.Shell>
+      <command>docker images | grep wouterd/tomcat || ./build-docker-images.sh 
+IMAGEID=$(docker build -rm -q=false . | grep &quot;Successfully built&quot; | cut -d &quot; &quot; -f 3)
+CONTAINERID=$(docker run -d ${IMAGEID})
+
+echo -n &quot;Waiting for tomcat to finish startup...&quot;
+
+CATALINA_LOG_FILE=&quot;catalina.$(date +%Y-%m-%d).log&quot;
+
+# Give Tomcat some time to wake up...
+sleep 10
+docker cp ${CONTAINERID}:/var/log/tomcat6/${CATALINA_LOG_FILE} .
+while ! grep -q &apos;INFO: Server startup&apos; ${CATALINA_LOG_FILE} ; do 
+    sleep 5
+    echo -n &quot;.&quot;
+    docker cp ${CONTAINERID}:/var/log/tomcat6/${CATALINA_LOG_FILE} .
+done
+
+echo &quot;Done&quot;
+rm ${CATALINA_LOG_FILE}
+
+IP=$(docker inspect -format &apos;{{.NetworkSettings.IPAddress}}&apos; ${CONTAINERID})
+
+curl -i http://$IP:8080/site/
+
+docker stop ${CONTAINERID}
+docker rm ${CONTAINERID}
+docker rmi ${IMAGEID}</command>
+    </hudson.tasks.Shell>
+  </postbuilders>
+  <runPostStepsIfResult>
+    <name>FAILURE</name>
+    <ordinal>2</ordinal>
+    <color>RED</color>
+    <completeBuild>true</completeBuild>
+  </runPostStepsIfResult>
+</maven2-moduleset>
