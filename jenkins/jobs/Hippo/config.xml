@@ -60,31 +60,7 @@
       <globalSettings class="jenkins.mvn.DefaultGlobalSettingsProvider"/>
     </hudson.tasks.Maven>
     <hudson.tasks.Shell>
-      <command>docker images | grep wouterd/tomcat || ./build-docker-images.sh
-IMAGEID=$(docker build --rm -q=false . | grep &quot;Successfully built&quot; | cut -d &quot; &quot; -f 3)
-mkdir -p logs
-CONTAINERID=$(docker run -d -v $(pwd)/logs:/var/log/tomcat6 ${IMAGEID})
-
-echo -n &quot;Waiting for tomcat to finish startup...&quot;
-
-CATALINA_LOG_FILE=&quot;$(pwd)/logs/catalina.$(date +%Y-%m-%d).log&quot;
-
-# Give Tomcat some time to wake up...
-while ! grep -q &apos;INFO: Server startup&apos; ${CATALINA_LOG_FILE} ; do
-    sleep 5
-    echo -n &quot;.&quot;
-done
-
-echo &quot;Done&quot;
-rm ${CATALINA_LOG_FILE}
-
-IP=$(docker inspect --format &apos;{{.NetworkSettings.IPAddress}}&apos; ${CONTAINERID})
-
-curl -i http://$IP:8080/site/
-
-docker kill ${CONTAINERID}
-docker rm ${CONTAINERID}
-docker rmi ${IMAGEID}</command>
+      <command>./myhippoproject/run-integration-test.sh</command>
     </hudson.tasks.Shell>
   </postbuilders>
   <runPostStepsIfResult>
