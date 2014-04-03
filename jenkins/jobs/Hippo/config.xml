@@ -60,7 +60,7 @@
       <globalSettings class="jenkins.mvn.DefaultGlobalSettingsProvider"/>
     </hudson.tasks.Maven>
     <hudson.tasks.Shell>
-      <command>./myhippoproject/run-integration-test.sh</command>
+      <command>${WORKSPACE}/myhippoproject/run-integration-test.sh</command>
     </hudson.tasks.Shell>
   </postbuilders>
   <runPostStepsIfResult>
