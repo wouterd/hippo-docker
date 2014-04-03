@@ -5,9 +5,6 @@
 VAGRANTFILE_API_VERSION = "2"
 
 $bootstrap_script = <<SCRIPT
-  # Install Oracle JDK
-  apt-get -y install python-software-properties
-  add-apt-repository -y ppa:webupd8team/java
   wget -q -O - http://pkg.jenkins-ci.org/debian/jenkins-ci.org.key | apt-key add -
   sh -c 'echo deb http://pkg.jenkins-ci.org/debian binary/ > /etc/apt/sources.list.d/jenkins.list'
   # Adding an apt gpg key is idempotent.
@@ -19,11 +16,8 @@ $bootstrap_script = <<SCRIPT
 
   apt-get update -q
 
-  echo oracle-java7-installer shared/accepted-oracle-license-v1-1 select true | /usr/bin/debconf-set-selections
-  echo oracle-jdk7-installer shared/accepted-oracle-license-v1-1 select true | /usr/bin/debconf-set-selections
-  
   apt-get -q -y --force-yes install \
-    oracle-jdk7-installer \
+    openjdk-7-jdk \
     maven \
     git \
     jenkins \

@@ -1,5 +1,5 @@
 <?xml version='1.0' encoding='UTF-8'?>
-<maven2-moduleset plugin="maven-plugin@2.0">
+<maven2-moduleset plugin="maven-plugin@2.1">
   <actions/>
   <description></description>
   <keepDependencies>false</keepDependencies>
@@ -18,7 +18,9 @@
     </branches>
     <doGenerateSubmoduleConfigurations>false</doGenerateSubmoduleConfigurations>
     <submoduleCfg class="list"/>
-    <extensions/>
+    <extensions>
+      <hudson.plugins.git.extensions.impl.CleanCheckout/>
+    </extensions>
   </scm>
   <canRoam>true</canRoam>
   <disabled>false</disabled>
@@ -35,7 +37,6 @@
   <defaultGoals>package</defaultGoals>
   <aggregatorStyleBuild>true</aggregatorStyleBuild>
   <incrementalBuild>false</incrementalBuild>
-  <perModuleEmail>true</perModuleEmail>
   <ignoreUpstremChanges>true</ignoreUpstremChanges>
   <archivingDisabled>false</archivingDisabled>
   <resolveDependencies>false</resolveDependencies>
@@ -59,31 +60,29 @@
       <globalSettings class="jenkins.mvn.DefaultGlobalSettingsProvider"/>
     </hudson.tasks.Maven>
     <hudson.tasks.Shell>
-      <command>docker images | grep wouterd/tomcat || ./build-docker-images.sh 
-IMAGEID=$(docker build -rm -q=false . | grep &quot;Successfully built&quot; | cut -d &quot; &quot; -f 3)
-CONTAINERID=$(docker run -d ${IMAGEID})
+      <command>docker images | grep wouterd/tomcat || ./build-docker-images.sh
+IMAGEID=$(docker build --rm -q=false . | grep &quot;Successfully built&quot; | cut -d &quot; &quot; -f 3)
+mkdir -p logs
+CONTAINERID=$(docker run -d -v $(pwd)/logs:/var/log/tomcat6 ${IMAGEID})
 
 echo -n &quot;Waiting for tomcat to finish startup...&quot;
 
-CATALINA_LOG_FILE=&quot;catalina.$(date +%Y-%m-%d).log&quot;
+CATALINA_LOG_FILE=&quot;$(pwd)/logs/catalina.$(date +%Y-%m-%d).log&quot;
 
 # Give Tomcat some time to wake up...
-sleep 10
-docker cp ${CONTAINERID}:/var/log/tomcat6/${CATALINA_LOG_FILE} .
-while ! grep -q &apos;INFO: Server startup&apos; ${CATALINA_LOG_FILE} ; do 
+while ! grep -q &apos;INFO: Server startup&apos; ${CATALINA_LOG_FILE} ; do
     sleep 5
     echo -n &quot;.&quot;
-    docker cp ${CONTAINERID}:/var/log/tomcat6/${CATALINA_LOG_FILE} .
 done
 
 echo &quot;Done&quot;
 rm ${CATALINA_LOG_FILE}
 
-IP=$(docker inspect -format &apos;{{.NetworkSettings.IPAddress}}&apos; ${CONTAINERID})
+IP=$(docker inspect --format &apos;{{.NetworkSettings.IPAddress}}&apos; ${CONTAINERID})
 
 curl -i http://$IP:8080/site/
 
-docker stop ${CONTAINERID}
+docker kill ${CONTAINERID}
 docker rm ${CONTAINERID}
 docker rmi ${IMAGEID}</command>
     </hudson.tasks.Shell>
