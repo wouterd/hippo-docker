@@ -19,7 +19,7 @@ rm ${CATALINA_LOG_FILE}
 
 IP=$(docker inspect --format '{{.NetworkSettings.IPAddress}}' ${CONTAINERID})
 
-curl -i http://$IP:8080/site
+curl -i http://$IP:8080/site/
 
 docker kill ${CONTAINERID}
 docker rm ${CONTAINERID}
