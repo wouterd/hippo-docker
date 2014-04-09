@@ -15,7 +15,6 @@ while ! grep -q 'INFO: Server startup' ${CATALINA_LOG_FILE} ; do
 done
 
 echo "Done"
-rm ${CATALINA_LOG_FILE}
 
 IP=$(docker inspect --format '{{.NetworkSettings.IPAddress}}' ${CONTAINERID})
 
