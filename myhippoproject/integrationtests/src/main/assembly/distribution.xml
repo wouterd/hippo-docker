@@ -25,10 +25,11 @@
   </files>
   <dependencySets>
     <dependencySet>
+      <outputFileNameMapping>${artifact.artifactId}.${artifact.extension}</outputFileNameMapping>
       <outputDirectory>/webapps</outputDirectory>
       <includes>
-        <include>org.example:myhippoproject-cms</include>
-        <include>org.example:myhippoproject-site</include>
+        <include>org.example:cms</include>
+        <include>org.example:site</include>
       </includes>
     </dependencySet>
     <dependencySet>

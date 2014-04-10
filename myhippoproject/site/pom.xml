@@ -10,7 +10,7 @@
 
   <name>My Hippo Project Site</name>
   <description>My Hippo Project Site</description>
-  <artifactId>myhippoproject-site</artifactId>
+  <artifactId>site</artifactId>
   <packaging>war</packaging>
 
   <dependencies>

@@ -10,7 +10,7 @@
 
   <name>My Hippo Project CMS</name>
   <description>My Hippo Project CMS</description>
-  <artifactId>myhippoproject-cms</artifactId>
+  <artifactId>cms</artifactId>
   <packaging>war</packaging>
 
   <dependencies>

@@ -18,6 +18,7 @@
   </properties>
 
   <dependencies>
+    <!-- test dependencies -->
     <dependency>
       <groupId>junit</groupId>
       <artifactId>junit</artifactId>
@@ -25,14 +26,26 @@
       <scope>test</scope>
     </dependency>
     <dependency>
+      <groupId>org.seleniumhq.selenium</groupId>
+      <artifactId>selenium-api</artifactId>
+      <version>2.39.0</version>
+    </dependency>
+    <dependency>
+      <groupId>com.github.detro.ghostdriver</groupId>
+      <artifactId>phantomjsdriver</artifactId>
+      <version>1.1.0</version>
+    </dependency>
+
+    <!-- package dependencies -->
+    <dependency>
       <groupId>org.example</groupId>
-      <artifactId>myhippoproject-cms</artifactId>
+      <artifactId>cms</artifactId>
       <version>1.01.00-SNAPSHOT</version>
       <type>war</type>
     </dependency>
     <dependency>
       <groupId>org.example</groupId>
-      <artifactId>myhippoproject-site</artifactId>
+      <artifactId>site</artifactId>
       <version>1.01.00-SNAPSHOT</version>
       <type>war</type>
     </dependency>
@@ -55,6 +68,26 @@
 
   <build>
     <plugins>
+      <plugin>
+        <groupId>org.apache.maven.plugins</groupId>
+        <artifactId>maven-failsafe-plugin</artifactId>
+        <version>2.17</version>
+        <executions>
+          <execution>
+            <id>run-tests</id>
+            <goals>
+              <goal>integration-test</goal>
+              <goal>verify</goal>
+            </goals>
+            <phase>integration-test</phase>
+            <configuration>
+              <systemPropertyVariables>
+                <container_ip_file>${project.build.directory}/docker-work/docker_container.ip</container_ip_file>
+              </systemPropertyVariables>
+            </configuration>
+          </execution>
+        </executions>
+      </plugin>
       <plugin>
         <artifactId>maven-assembly-plugin</artifactId>
         <executions>

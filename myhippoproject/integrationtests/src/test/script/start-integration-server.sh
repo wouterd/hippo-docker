@@ -33,6 +33,9 @@ fi
 container_id=$(docker run -d -v ${logs}:/var/log/tomcat6 ${image_id})
 echo ${container_id} > ${workdir}/docker_container.id
 
+container_ip=$(docker inspect --format '{{.NetworkSettings.IPAddress}}' ${container_id})
+echo ${container_ip} > ${workdir}/docker_container.ip
+
 echo -n "Waiting for tomcat to finish startup..."
 
 # Give Tomcat some time to wake up...
