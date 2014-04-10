@@ -35,10 +35,4 @@ done
 
 echo -n "done"
 
-if [[ -z "${DOCKER_HOST}" ]] ; then
-  echo "${container_ip}:8080" > ${workdir}/docker_container.ip
-else
-  echo "Remote docker host detected, using SSH to tunnel traffic (under Mac OS X)"
-  echo "localhost:1337" > ${workdir}/docker_container.ip
-  launchctl submit -l ${container_id} -- boot2docker ssh -L 1337:${container_ip}:8080
-fi
+echo "${container_ip}:8080" > ${workdir}/docker_container.ip

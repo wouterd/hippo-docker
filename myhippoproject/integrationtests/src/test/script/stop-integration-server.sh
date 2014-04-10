@@ -17,7 +17,3 @@ if [[ -e ${image_id_file} ]] ; then
   image_id=$(cat ${image_id_file})
   docker rmi ${image_id}
 fi
-
-if [[ ${DOCKER_HOST} ]] ; then
-  launchctl remove ${container_id}
-fi
