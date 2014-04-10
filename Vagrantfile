@@ -22,7 +22,8 @@ $bootstrap_script = <<SCRIPT
     maven \
     git \
     jenkins \
-    lxc-docker
+    lxc-docker \
+    phantomjs
 
   echo "Done installing, putting in place bootstrap content.."
 

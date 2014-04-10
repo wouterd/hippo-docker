@@ -5,7 +5,6 @@ set -eu
 workdir="${WORK_DIR}"
 dockerfile="${DOCKER_FILE_LOCATION}"
 distributionfile="${DISTRIBUTION_FILE_LOCATION}"
-logs="${workdir}/logs"
 dockerbuilddir="${workdir}/docker-build"
 
 mkdir -p ${workdir}
@@ -19,18 +18,9 @@ echo ${image_id} > ${workdir}/docker_image.id
 
 rm -rf ${dockerbuilddir}
 
-catalina_out="catalina.$(date +%Y-%m-%d).log"
+catalina_out="/var/log/tomcat6/catalina.$(date +%Y-%m-%d).log"
 
-if [[ "$(uname)" == "Darwin" ]] ; then
-    echo 'Detected MacOS X, trying to use boot2docker ssh to check catalina logs..'
-    logs='/tmp/docker-logs'
-    grepcommand="boot2docker ssh grep -q 'INFO: Server startup' ${logs}/${catalina_out}"
-else
-    mkdir -p ${logs}
-    grepcommand="grep -q 'INFO: Server startup' ${logs}/${catalina_out}"
-fi
-
-container_id=$(docker run -d -v ${logs}:/var/log/tomcat6 ${image_id})
+container_id=$(docker run -d ${image_id})
 echo ${container_id} > ${workdir}/docker_container.id
 
 container_ip=$(docker inspect --format '{{.NetworkSettings.IPAddress}}' ${container_id})
@@ -39,7 +29,7 @@ echo ${container_ip} > ${workdir}/docker_container.ip
 echo -n "Waiting for tomcat to finish startup..."
 
 # Give Tomcat some time to wake up...
-while ! ${grepcommand} ; do
+while ! docker run --rm --volumes-from ${container_id} busybox grep -i -q 'INFO: Server startup in' ${catalina_out} ; do
     sleep 5
     echo -n "."
 done
