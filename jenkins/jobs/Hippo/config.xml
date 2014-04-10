@@ -1,5 +1,5 @@
 <?xml version='1.0' encoding='UTF-8'?>
-<maven2-moduleset plugin="maven-plugin@2.1">
+<maven2-moduleset plugin="maven-plugin@2.0">
   <actions/>
   <description></description>
   <keepDependencies>false</keepDependencies>
@@ -33,10 +33,11 @@
     <artifactId>myhippoproject</artifactId>
   </rootModule>
   <rootPOM>myhippoproject/pom.xml</rootPOM>
-  <goals>clean package</goals>
+  <goals>clean verify</goals>
   <defaultGoals>package</defaultGoals>
   <aggregatorStyleBuild>true</aggregatorStyleBuild>
   <incrementalBuild>false</incrementalBuild>
+  <perModuleEmail>true</perModuleEmail>
   <ignoreUpstremChanges>true</ignoreUpstremChanges>
   <archivingDisabled>false</archivingDisabled>
   <resolveDependencies>false</resolveDependencies>
@@ -50,19 +51,7 @@
   <publishers/>
   <buildWrappers/>
   <prebuilders/>
-  <postbuilders>
-    <hudson.tasks.Maven>
-      <targets>-P dist</targets>
-      <mavenName>(Default)</mavenName>
-      <pom>myhippoproject/pom.xml</pom>
-      <usePrivateRepository>false</usePrivateRepository>
-      <settings class="jenkins.mvn.DefaultSettingsProvider"/>
-      <globalSettings class="jenkins.mvn.DefaultGlobalSettingsProvider"/>
-    </hudson.tasks.Maven>
-    <hudson.tasks.Shell>
-      <command>${WORKSPACE}/myhippoproject/run-integration-test.sh</command>
-    </hudson.tasks.Shell>
-  </postbuilders>
+  <postbuilders/>
   <runPostStepsIfResult>
     <name>FAILURE</name>
     <ordinal>2</ordinal>
