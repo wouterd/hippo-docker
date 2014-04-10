@@ -1,6 +1,6 @@
 #!/bin/bash
 
-set -eux
+set -eu
 
 workdir="${WORK_DIR}"
 dockerfile="${DOCKER_FILE_LOCATION}"
@@ -22,6 +22,7 @@ rm -rf ${dockerbuilddir}
 catalina_out="catalina.$(date +%Y-%m-%d).log"
 
 if [[ "$(uname)" == "Darwin" ]] ; then
+    echo 'Detected MacOS X, trying to use boot2docker ssh to check catalina logs..'
     logs='/tmp/docker-logs'
     grepcommand="boot2docker ssh grep -q 'INFO: Server startup' ${logs}/${catalina_out}"
 else
