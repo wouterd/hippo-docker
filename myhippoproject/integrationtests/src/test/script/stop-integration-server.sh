@@ -5,6 +5,7 @@ set -eu
 workdir=${WORK_DIR}
 container_id_file=${workdir}/docker_container.id
 image_id_file=${workdir}/docker_image.id
+ssh_pid_file=${workdir}/ssh.pid
 
 if [[ -e ${container_id_file} ]] ; then
   container_id=$(cat ${container_id_file})
@@ -15,4 +16,8 @@ fi
 if [[ -e ${image_id_file} ]] ; then
   image_id=$(cat ${image_id_file})
   docker rmi ${image_id}
+fi
+
+if [[ ${DOCKER_HOST} ]] ; then
+  launchctl remove ${container_id}
 fi

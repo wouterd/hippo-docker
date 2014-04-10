@@ -46,7 +46,7 @@ public abstract class WebDriverTestCase {
         Path path = Paths.get(containerIpFileName);
 
         List<String> lines = Files.readAllLines(path, Charset.forName("utf-8"));
-        baseUrl = "http://" + lines.get(0) + ":8080/site";
+        baseUrl = "http://" + lines.get(0) + "/site";
 
         System.out.println("Base url = " + baseUrl);
 

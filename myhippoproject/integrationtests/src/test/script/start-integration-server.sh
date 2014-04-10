@@ -24,7 +24,6 @@ container_id=$(docker run -d ${image_id})
 echo ${container_id} > ${workdir}/docker_container.id
 
 container_ip=$(docker inspect --format '{{.NetworkSettings.IPAddress}}' ${container_id})
-echo ${container_ip} > ${workdir}/docker_container.ip
 
 echo -n "Waiting for tomcat to finish startup..."
 
@@ -35,3 +34,11 @@ while ! docker run --rm --volumes-from ${container_id} busybox grep -i -q 'INFO:
 done
 
 echo -n "done"
+
+if [[ -z "${DOCKER_HOST}" ]] ; then
+  echo "${container_ip}:8080" > ${workdir}/docker_container.ip
+else
+  echo "Remote docker host detected, using SSH to tunnel traffic (under Mac OS X)"
+  echo "localhost:1337" > ${workdir}/docker_container.ip
+  launchctl submit -l ${container_id} -- boot2docker ssh -L 1337:${container_ip}:8080
+fi
