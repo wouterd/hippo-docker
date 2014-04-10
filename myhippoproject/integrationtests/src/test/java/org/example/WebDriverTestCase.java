@@ -13,11 +13,8 @@ import org.junit.Before;
 import org.junit.BeforeClass;
 import org.openqa.selenium.Dimension;
 import org.openqa.selenium.WebDriver;
-import org.openqa.selenium.logging.LogEntries;
-import org.openqa.selenium.logging.LogEntry;
 import org.openqa.selenium.logging.LogType;
 import org.openqa.selenium.logging.LoggingPreferences;
-import org.openqa.selenium.logging.Logs;
 import org.openqa.selenium.phantomjs.PhantomJSDriver;
 import org.openqa.selenium.phantomjs.PhantomJSDriverService;
 import org.openqa.selenium.remote.CapabilityType;
@@ -98,6 +95,8 @@ public abstract class WebDriverTestCase {
      */
     @After
     public void tearDown() {
+/* Commented out, because ubuntu doesn't have the right phantomjs version..
+
         Logs logs = driver.manage().logs();
 
         LogEntries entries = logs.get(LogType.BROWSER);
@@ -105,5 +104,6 @@ public abstract class WebDriverTestCase {
             logger.info(entry.toString());
         }
         driver.quit();
+*/
     }
 }
