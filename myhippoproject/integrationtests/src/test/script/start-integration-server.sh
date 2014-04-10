@@ -2,14 +2,22 @@
 
 set -eu
 
-workdir=${WORK_DIR}
-dockerfile=${DOCKER_FILE_LOCATION}
-logs=${workdir}/logs
+workdir="${WORK_DIR}"
+dockerfile="${DOCKER_FILE_LOCATION}"
+distributionfile="${DISTRIBUTION_FILE_LOCATION}"
+logs="${workdir}/logs"
+dockerbuilddir="${workdir}/docker-build"
 
 mkdir -p ${workdir}
 
-image_id=$(docker build --rm -q=false ${dockerfile} | grep "Successfully built" | cut -d " " -f 3)
+mkdir -p ${dockerbuilddir}
+
+cp ${dockerfile} ${distributionfile} ${dockerbuilddir}/
+
+image_id=$(docker build --rm -q=false ${dockerbuilddir} | grep "Successfully built" | cut -d " " -f 3)
 echo ${image_id} > ${workdir}/docker_image.id
+
+rm -rf ${dockerbuilddir}
 
 mkdir -p ${logs}
 
