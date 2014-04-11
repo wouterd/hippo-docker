@@ -145,4 +145,39 @@
     </plugins>
   </build>
 
+  <profiles>
+    <profile>
+      <id>boot2docker</id>
+      <activation>
+        <activeByDefault>false</activeByDefault>
+        <property>
+          <name>boot2docker</name>
+        </property>
+      </activation>
+      <build>
+        <plugins>
+          <plugin>
+            <groupId>org.codehaus.mojo</groupId>
+            <artifactId>exec-maven-plugin</artifactId>
+            <version>1.2.1</version>
+            <executions>
+              <execution>
+                <id>build-and-start-integration-server</id>
+                <goals>
+                  <goal>exec</goal>
+                </goals>
+                <phase>pre-integration-test</phase>
+                <configuration>
+                  <environmentVariables>
+                    <BOOT_2_DOCKER_HOST_IP>${boot2docker}</BOOT_2_DOCKER_HOST_IP>
+                  </environmentVariables>
+                </configuration>
+              </execution>
+            </executions>
+          </plugin>
+        </plugins>
+      </build>
+    </profile>
+  </profiles>
+
 </project>

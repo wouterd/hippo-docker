@@ -20,6 +20,14 @@ To build a Tomcat distribution tarball containing only deployable artifacts:
 
 See also src/main/assembly/distribution.xml if you need to customize the distribution.
 
+Boot2Docker support
+===================
+
+The integration tests require docker. If you are running on MacOS or a Linux without Docker installed, you can use
+boot2docker-cli. Specify the IP of your VM on the host-only network with the -Dboot2docker switch like this:
+
+   mvn verify -Dboot2docker=192.168.59.103
+
 Using JRebel
 ============
 

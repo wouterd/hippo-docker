@@ -1,27 +1,36 @@
 #!/bin/bash
 
+if [[ ${BOOT_2_DOCKER_HOST_IP} ]] ; then
+    echo "Boot2Docker specified, this will work if you use the new boot2docker-cli VM.."
+    boot2docker='yes'
+    docker_run_args='-p 8080'
+else
+    boot2docker=''
+    docker_run_args=''
+fi
+
 set -eu
 
-workdir="${WORK_DIR}"
-dockerfile="${DOCKER_FILE_LOCATION}"
-distributionfile="${DISTRIBUTION_FILE_LOCATION}"
-dockerbuilddir="${workdir}/docker-build"
+work_dir="${WORK_DIR}"
+docker_file="${DOCKER_FILE_LOCATION}"
+distribution_file="${DISTRIBUTION_FILE_LOCATION}"
+docker_build_dir="${work_dir}/docker-build"
 
-mkdir -p ${workdir}
+mkdir -p ${work_dir}
 
-mkdir -p ${dockerbuilddir}
+mkdir -p ${docker_build_dir}
 
-cp ${dockerfile} ${distributionfile} ${dockerbuilddir}/
+cp ${docker_file} ${distribution_file} ${docker_build_dir}/
 
-image_id=$(docker build --rm -q=false ${dockerbuilddir} | grep "Successfully built" | cut -d " " -f 3)
-echo ${image_id} > ${workdir}/docker_image.id
+image_id=$(docker build --rm -q=false ${docker_build_dir} | grep "Successfully built" | cut -d " " -f 3)
+echo ${image_id} > ${work_dir}/docker_image.id
 
-rm -rf ${dockerbuilddir}
+rm -rf ${docker_build_dir}
 
 catalina_out="/var/log/tomcat6/catalina.$(date +%Y-%m-%d).log"
 
-container_id=$(docker run -d ${image_id})
-echo ${container_id} > ${workdir}/docker_container.id
+container_id=$(docker run ${docker_run_args} -d ${image_id})
+echo ${container_id} > ${work_dir}/docker_container.id
 
 container_ip=$(docker inspect --format '{{.NetworkSettings.IPAddress}}' ${container_id})
 
@@ -35,4 +44,13 @@ done
 
 echo -n "done"
 
-echo "${container_ip}:8080" > ${workdir}/docker_container.ip
+if [[ ${boot2docker} ]] ; then
+    # This Go template will break if we end up exposing more than one port, but by then this should be ported to Java
+    # code already (famous last words...)
+    tomcat_port=$(docker inspect --format '{{ range .NetworkSettings.Ports }}{{ range . }}{{ .HostPort }}{{end}}{{end}}' ${container_id})
+    tomcat_host_port="${BOOT_2_DOCKER_HOST_IP}:${tomcat_port}"
+else
+    tomcat_host_port="${container_ip}:8080"
+fi
+
+echo ${tomcat_host_port} > ${work_dir}/docker_container.ip
