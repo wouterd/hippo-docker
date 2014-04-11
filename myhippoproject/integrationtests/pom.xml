@@ -79,7 +79,6 @@
               <goal>integration-test</goal>
               <goal>verify</goal>
             </goals>
-            <phase>integration-test</phase>
             <configuration>
               <systemPropertyVariables>
                 <container_ip_file>${project.build.directory}/docker-work/docker_container.ip</container_ip_file>
