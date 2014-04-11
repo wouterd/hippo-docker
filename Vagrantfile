@@ -55,7 +55,6 @@ Vagrant.configure(VAGRANTFILE_API_VERSION) do |config|
   # Create a forwarded port mapping which allows access to a specific port
   # within the machine from a port on the host machine.
   config.vm.network :forwarded_port, guest: 8080, host: 8080, auto_correct:true
-  config.vm.network :forwarded_port, guest: 8081, host: 8081, auto_correct:true
 
   config.vm.provider "virtualbox" do |v|
     v.customize ["modifyvm", :id, "--memory", "4096", "--cpus", "4"]
