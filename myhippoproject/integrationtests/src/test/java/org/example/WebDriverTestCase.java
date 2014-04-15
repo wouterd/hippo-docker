@@ -1,10 +1,9 @@
 package org.example;
 
-import java.nio.charset.Charset;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
-import java.util.List;
+import java.util.Properties;
 import java.util.logging.Level;
 
 import org.junit.After;
@@ -45,10 +44,12 @@ public abstract class WebDriverTestCase {
 
         Path path = Paths.get(containerIpFileName);
 
-        List<String> lines = Files.readAllLines(path, Charset.forName("utf-8"));
-        baseUrl = "http://" + lines.get(0) + "/site";
+        Properties containerInfo = new Properties();
+        containerInfo.load(Files.newInputStream(path));
 
-        System.out.println("Base url = " + baseUrl);
+        baseUrl = "http://" + containerInfo.get("8080/tcp") + "/site";
+
+        logger.info("Base URL = {}", baseUrl);
 
         if (containerIpFileName == null) {
             throw new IllegalStateException("No container_ip_file specified, can't resolve base URL");

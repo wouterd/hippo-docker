@@ -81,7 +81,7 @@
             </goals>
             <configuration>
               <systemPropertyVariables>
-                <container_ip_file>${project.build.directory}/docker-work/docker_container.ip</container_ip_file>
+                <container_ip_file>${project.build.directory}/docker-work/docker_container_hosts.properties</container_ip_file>
               </systemPropertyVariables>
             </configuration>
           </execution>

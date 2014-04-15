@@ -9,10 +9,8 @@
     -->
 
     <!-- Start the repository as a remote server and bind it on the specified address -->
-    <!--
     <Parameter name="start-remote-server" value="true" override="false"/>
-    <Parameter name="repository-address" value="rmi://127.0.0.1:1099/hipporepository" override="false"/>
-    -->
+    <Parameter name="repository-address" value="rmi://0.0.0.0:1099/hipporepository" override="false"/>
 
     <!-- Enable this to let wicket output a wicketpath attribute for elements,
          see: http://www.onehippo.org/7_8/library/development/create-a-selenium-test-case.html -->
