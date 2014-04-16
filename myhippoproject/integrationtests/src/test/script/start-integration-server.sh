@@ -58,6 +58,6 @@ else
     exposed_ports=$(docker inspect --format '{{ range $key, $value := .Config.ExposedPorts }}{{ $key }} {{end}}' ${container_id})
     for port in ${exposed_ports} ; do
         split=(${port//\// })
-        echo "${port}=${container_ip}:${split}" >> ${work_dir}/docker_containter_hosts.properties
+        echo "${port}=${container_ip}:${split}" >> ${work_dir}/docker_container_hosts.properties
     done
 fi
