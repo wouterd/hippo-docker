@@ -44,7 +44,7 @@ done
 
 echo -n "done"
 
-rm ${work_dir}/docker_container_hosts.properties
+rm -f ${work_dir}/docker_container_hosts.properties
 
 if [[ ${boot2docker} ]] ; then
     sut_ip=${BOOT_2_DOCKER_HOST_IP}
@@ -57,7 +57,6 @@ else
     container_ip=$(docker inspect --format '{{.NetworkSettings.IPAddress}}' ${container_id})
     exposed_ports=$(docker inspect --format '{{ range $key, $value := .Config.ExposedPorts }}{{ $key }} {{end}}' $(container_id))
     for port in ${exposed_ports} ; do
-        # arrIN=(${IN//;/ })
         split=(${port//\// })
         echo "${port}=${container_ip}:${split}" >> ${work_dir}/docker_containter_hosts.properties
     done
