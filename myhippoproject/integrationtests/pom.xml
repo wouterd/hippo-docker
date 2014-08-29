@@ -90,7 +90,7 @@
       <plugin>
         <groupId>net.wouterdanes.docker</groupId>
         <artifactId>docker-maven-plugin</artifactId>
-        <version>1.5</version>
+        <version>2.0</version>
         <executions>
           <execution>
             <id>build</id>
@@ -119,6 +119,8 @@
                 <container>
                   <id>hippo</id>
                   <image>hippo-tomcat</image>
+                  <waitForStartup>Server startup in</waitForStartup>
+                  <startupTimeout>60</startupTimeout>
                 </container>
               </containers>
             </configuration>
