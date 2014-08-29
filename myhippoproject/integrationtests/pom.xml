@@ -69,25 +69,6 @@
   <build>
     <plugins>
       <plugin>
-        <groupId>org.apache.maven.plugins</groupId>
-        <artifactId>maven-failsafe-plugin</artifactId>
-        <version>2.17</version>
-        <executions>
-          <execution>
-            <id>run-tests</id>
-            <goals>
-              <goal>integration-test</goal>
-              <goal>verify</goal>
-            </goals>
-            <configuration>
-              <systemPropertyVariables>
-                <container_ip_file>${project.build.directory}/docker-work/docker_container_hosts.properties</container_ip_file>
-              </systemPropertyVariables>
-            </configuration>
-          </execution>
-        </executions>
-      </plugin>
-      <plugin>
         <artifactId>maven-assembly-plugin</artifactId>
         <executions>
           <execution>
@@ -107,76 +88,70 @@
         </executions>
       </plugin>
       <plugin>
-        <groupId>org.codehaus.mojo</groupId>
-        <artifactId>exec-maven-plugin</artifactId>
-        <version>1.2.1</version>
+        <groupId>net.wouterdanes.docker</groupId>
+        <artifactId>docker-maven-plugin</artifactId>
+        <version>2.0</version>
         <executions>
           <execution>
-            <id>build-and-start-integration-server</id>
+            <id>build</id>
             <goals>
-              <goal>exec</goal>
+              <goal>build-images</goal>
             </goals>
-            <phase>pre-integration-test</phase>
             <configuration>
-              <environmentVariables>
-                <WORK_DIR>${project.build.directory}/docker-work</WORK_DIR>
-                <DOCKER_FILE_LOCATION>${project.basedir}/src/main/assembly/Dockerfile</DOCKER_FILE_LOCATION>
-                <DISTRIBUTION_FILE_LOCATION>${project.build.directory}/myhippoproject.tar.gz</DISTRIBUTION_FILE_LOCATION>
-              </environmentVariables>
-              <executable>${project.basedir}/src/test/script/start-integration-server.sh</executable>
+              <images>
+                <image>
+                  <id>hippo-tomcat</id>
+                  <files>
+                    <file>${project.basedir}/src/main/assembly/Dockerfile</file>
+                    <file>${project.build.directory}/myhippoproject.tar.gz</file>
+                  </files>
+                </image>
+              </images>
             </configuration>
           </execution>
           <execution>
-            <id>stop-and-remove-integration-server</id>
+            <id>start</id>
             <goals>
-              <goal>exec</goal>
+              <goal>start-containers</goal>
             </goals>
-            <phase>post-integration-test</phase>
             <configuration>
-              <environmentVariables>
-                <WORK_DIR>${project.build.directory}/docker-work</WORK_DIR>
-              </environmentVariables>
-              <executable>${project.basedir}/src/test/script/stop-integration-server.sh</executable>
+              <containers>
+                <container>
+                  <id>hippo</id>
+                  <image>hippo-tomcat</image>
+                  <waitForStartup>Server startup in</waitForStartup>
+                  <startupTimeout>60</startupTimeout>
+                </container>
+              </containers>
+            </configuration>
+          </execution>
+          <execution>
+            <id>stop-and-clean-up</id>
+            <goals>
+              <goal>stop-containers</goal>
+            </goals>
+          </execution>
+        </executions>
+      </plugin>
+      <plugin>
+        <groupId>org.apache.maven.plugins</groupId>
+        <artifactId>maven-failsafe-plugin</artifactId>
+        <version>2.17</version>
+        <executions>
+          <execution>
+            <id>run-tests</id>
+            <goals>
+              <goal>integration-test</goal>
+              <goal>verify</goal>
+            </goals>
+            <configuration>
+              <systemPropertyVariables>
+                <container_baseurl>http://${docker.containers.hippo.ports.8080/tcp.host}:${docker.containers.hippo.ports.8080/tcp.port}</container_baseurl>
+              </systemPropertyVariables>
             </configuration>
           </execution>
         </executions>
       </plugin>
     </plugins>
   </build>
-
-  <profiles>
-    <profile>
-      <id>boot2docker</id>
-      <activation>
-        <activeByDefault>false</activeByDefault>
-        <property>
-          <name>boot2docker</name>
-        </property>
-      </activation>
-      <build>
-        <plugins>
-          <plugin>
-            <groupId>org.codehaus.mojo</groupId>
-            <artifactId>exec-maven-plugin</artifactId>
-            <version>1.2.1</version>
-            <executions>
-              <execution>
-                <id>build-and-start-integration-server</id>
-                <goals>
-                  <goal>exec</goal>
-                </goals>
-                <phase>pre-integration-test</phase>
-                <configuration>
-                  <environmentVariables>
-                    <BOOT_2_DOCKER_HOST_IP>${boot2docker}</BOOT_2_DOCKER_HOST_IP>
-                  </environmentVariables>
-                </configuration>
-              </execution>
-            </executions>
-          </plugin>
-        </plugins>
-      </build>
-    </profile>
-  </profiles>
-
 </project>

@@ -1,9 +1,5 @@
 package org.example;
 
-import java.nio.file.Files;
-import java.nio.file.Path;
-import java.nio.file.Paths;
-import java.util.Properties;
 import java.util.logging.Level;
 
 import org.junit.After;
@@ -40,20 +36,9 @@ public abstract class WebDriverTestCase {
 
     @BeforeClass
     public static void globalSetup() throws Exception {
-        String containerIpFileName = System.getProperty("container_ip_file");
-
-        Path path = Paths.get(containerIpFileName);
-
-        Properties containerInfo = new Properties();
-        containerInfo.load(Files.newInputStream(path));
-
-        baseUrl = "http://" + containerInfo.get("8080/tcp") + "/site";
+        baseUrl = System.getProperty("container_baseurl") + "/site";
 
         logger.info("Base URL = {}", baseUrl);
-
-        if (containerIpFileName == null) {
-            throw new IllegalStateException("No container_ip_file specified, can't resolve base URL");
-        }
 
         service = PhantomJSDriverService.createDefaultService();
         service.start();
