@@ -25,6 +25,10 @@ $bootstrap_script = <<SCRIPT
     lxc-docker \
     phantomjs
 
+  echo 'DOCKER_OPTS="-H unix:///var/run/docker.sock -H tcp://127.0.0.1:4243"' >> /etc/default/docker
+
+  service docker restart
+
   echo "Done installing, putting in place bootstrap content.."
 
   service jenkins stop
